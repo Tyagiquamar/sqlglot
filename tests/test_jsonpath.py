@@ -38,6 +38,14 @@ class TestJsonpath(unittest.TestCase):
                 with self.assertRaises(ParseError):
                     parse(selector)
 
+    def test_exponent_index_raises_parse_error(self):
+        # JSONPath array indexes are decimal integers; the tokenizer can emit
+        # exponent notation, which int() rejects with ValueError.
+        for selector in ("$[2E]", "$[1e5]", "$[-2E]"):
+            with self.subTest(selector):
+                with self.assertRaises(ParseError):
+                    parse(selector, dialect="snowflake")
+
     def test_identity(self):
         for selector, expected in (
             ("$.select", "$.select"),
