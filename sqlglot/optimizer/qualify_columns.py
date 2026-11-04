@@ -417,6 +417,7 @@ def _expand_alias_refs(
                     is_having
                     and table
                     and not dialect.PROJECTION_ALIASES_SHADOW_SOURCE_NAMES
+                    and not dialect.FORCE_EARLY_ALIAS_REF_EXPANSION
                     and (in_agg or column.name in grouped_columns)
                 ):
                     skip_replace = True
